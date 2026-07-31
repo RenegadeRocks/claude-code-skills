@@ -13,8 +13,14 @@ the map below if reading is impractical.)
 
 ## The whitepaper vault (read at authoring time)
 
-Directory (this author's vault — substitute your own whitepaper directory):
-`/Users/josh/Documents/Satbir Life OS/60-sources/AI Whitepapers/`
+Resolve the vault directory in this order, first match wins:
+
+1. `$FORGE_PRD_WHITEPAPERS` environment variable, if set.
+2. `~/Documents/Satbir Life OS/60-sources/AI Whitepapers/` (the authoring machine's vault).
+3. A directory the user names — ask once, only if the PRD is for an agentic/AI product.
+
+If none resolves, skip the PDFs without asking again; the map below is the authored
+substitute and is sufficient.
 
 | Day | File | Theme |
 |---|---|---|
@@ -24,8 +30,7 @@ Directory (this author's vault — substitute your own whitepaper directory):
 | 4 | `doc_3c937817f3cb_Vibe_Coding_Agent_Security_and_Evaluation_Day_4.pdf` | Security (7 pillars), evaluation (7 dimensions), observability |
 | 5 | `doc_2103526c7ce1_Day_5_v3.pdf` | Spec-Driven Development, Policy Server, HITL, the build workflow |
 
-If the vault is absent (different machine), the map below is the authored substitute — but
-prefer the live PDFs when present.
+Prefer the live PDFs whenever a vault resolves.
 
 ---
 
