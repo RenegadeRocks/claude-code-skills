@@ -1,6 +1,6 @@
 # Claude Code Personal Skill Library
 
-Nine custom skills for [Claude Code](https://claude.com/claude-code), built on 2026-07-07 from a deep research pass over this machine's projects, agent systems (Hermes + OpenClaw), and ~800 Claude Code sessions. Each skill encodes a recurring workflow, a hard-won lesson, or a quality bar so future sessions apply it automatically.
+Ten custom skills for [Claude Code](https://claude.com/claude-code), most built on 2026-07-07 from a deep research pass over this machine's projects, agent systems (Hermes + OpenClaw), and ~800 Claude Code sessions. Each skill encodes a recurring workflow, a hard-won lesson, or a quality bar so future sessions apply it automatically.
 
 Every skill was verified against live machine facts and tested with dummy-data scenarios before release.
 
@@ -49,6 +49,7 @@ Claude Code picks it up automatically — invoke explicitly (e.g. `/game-verify`
 | Skill | What it does |
 |---|---|
 | [**system-to-spec**](system-to-spec/SKILL.md) | Extracts a portable spec from an already-*working* system so it can be rebuilt on any platform: behavior inventory, invariant-vs-configuration split, Gherkin acceptance tests, and cold-rebuild fidelity checks. |
+| [**forge-prd**](forge-prd/SKILL.md) | Turns an idea or existing system into a professional, foolproof Spec-Driven-Development PRD: the spec IS the product. Grounded in framework research, governed by the BUNNY build harness with tests-first per-phase gates, adversarially red-teamed until clean, then exported to MD/PDF/DOCX. Strongest for agentic/multi-agent products; the method applies to any PRD. Ships with reference outputs, a methodology library, and export scripts. |
 
 ### 📚 Learning & Family
 
