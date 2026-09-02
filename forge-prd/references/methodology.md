@@ -120,8 +120,10 @@ Read `references/bunny-governance.md` and encode into the PRD (exemplar: §18.4 
   INVARIANTS · ACTION · ACCEPTANCE · VERIFY · AUTHORIZATION · ON-FAIL).
 - The **validator / executor / authorizer separation** (no actor both does and certifies).
 - **Lock-and-proceed / verify-before-next** — a phase locks (VERIFY evidence exists +
-  authorized) before the next opens; gates are checkpoints, not stopping lines (full scope
-  is the target).
+  authorized) before the next opens. Full scope is the target, **and a gate is a stop**: the
+  Executor halts, presents VERIFY, and waits for an authorization artifact it cannot produce
+  itself (`bunny-governance.md` §4). Write every AUTHORIZATION field as that imperative,
+  never as a bare role name.
 - The **tests-first per-phase gate** — each phase's ACCEPTANCE Gherkin is authored as an
   executable test suite BEFORE its code (red→green); the phase GATE = that suite green + the
   CI eval gate; tests accrue into a growing regression suite every later phase keeps green.

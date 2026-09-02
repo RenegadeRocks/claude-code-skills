@@ -7,7 +7,7 @@ are the difference between a spec that *looks* foolproof and one that *is*.
 
 A fleet of agents built on the same model share the same training cutoff and the same
 confident-but-stale beliefs — especially about model names/IDs, API limits, and library
-versions. In the Agent Atelier build, an early pass mislabeled the image model; only a
+versions (and, per §12, about what a given *tool* can or cannot do). In the Agent Atelier build, an early pass mislabeled the image model; only a
 *targeted currency hunt* caught it. **Always scope at least one review lens to CURRENCY &
 COMPLETENESS,** and treat every model ID / external limit as "confirm against live docs at
 build time" (the BUNNY grounding discipline). A red-team of clones will happily agree on a
@@ -117,3 +117,23 @@ product — that swallows input and returns opacity is a failure. In P0, intake 
 conversationally, one focus at a time; and in the *product* you spec, make the config intake a
 guided interview, not a wall of fields. Opacity after input is the anti-pattern to design out
 at both levels.
+
+## 11. Handover hygiene — snapshot before anyone touches it
+
+Three failures from one four-builder run, all avoidable: (a) two builders stalled on files that
+existed but were not supplied — **ship the whole artifact set, never the headline document
+alone**; (b) a builder was given the PDF and concluded Appendix A was missing — extraction
+mangles fenced blocks, so **markdown is the working copy; PDF is for humans**; (c) a builder's
+package was copied after another builder had written into `specs/deviation_log.md`; it
+inherited the entry and then contradicted it in its own report. **Copy the package fresh for
+each builder. Never hand anyone a folder another builder has written into.**
+
+## 12. One tool's limit is not a fact about the world
+
+§1 warns about stale beliefs on model IDs and API limits. The same trap applies to *your own
+observations*: a restriction you hit in one harness (a blocked protocol, a missing API, a
+sandbox rule) is a fact about that harness. In the Task Board build the MCP browser tool
+refused `file://`; that was written into the PRD as "the build environment blocks `file://`",
+and a builder using an npm-installed Playwright disproved it by execution. **Write the
+observation with its scope attached, and make the spec detect at runtime rather than
+assert.** The deviation log exists for exactly this.
