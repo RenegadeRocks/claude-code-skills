@@ -111,10 +111,14 @@ source code (a Day-4 principle), not something to defer to regeneration.
 
 **P3 — Wire in the BUNNY build governance** (`references/bunny-governance.md`): the harness
 that makes the build executable, gated, and honest — the 10-field prompt-contracts, the
-validator/executor/authorizer separation, lock-and-proceed, the **tests-first per-phase
-gate** (each phase's acceptance Gherkin becomes an executable test suite authored *before*
-its code; the phase gate is a green suite, not a judgment call), the conscious-deviation
-log, and the ON-FAIL / grounding disciplines.
+validator/executor/authorizer separation, lock-and-proceed **as a halt** (every AUTHORIZATION
+field is an imperative — STOP · present VERIFY · wait — and release is an artifact the builder
+cannot produce), the **tests-first per-phase gate** (each phase's acceptance Gherkin becomes
+an executable test suite authored *before* its code; the phase gate is a green suite, not a
+judgment call), the conscious-deviation log, and the ON-FAIL / grounding disciplines. **You,
+the PRD author, ship the suite** in `specs/tests/` together with a hook contract — the builder
+makes it green. Tests left as prose become a different, weaker bar in every builder that reads
+them.
 
 **P4 — Multi-agent foolproofing audit** (`references/workflow-patterns.md`). Fan out
 adversarial auditors, one per robustness dimension, plus a small design panel for the most
@@ -164,7 +168,15 @@ alignment.
    never the conversation. Compaction is lossy; disk is not.
 6. **Loop the red-team to clean.** Two consecutive clean passes, or you are not done.
 7. **Deterministic gates over vibes.** Where a check can be made observable (a test, a
-   linter, a schema), make it the hard gate; keep the LLM-judge advisory.
+   linter, a schema), make it the hard gate; keep the LLM-judge advisory. In P2/P3, apply it
+   line by line: **every MUST in the spec names the test ID that checks it, or is downgraded
+   to SHOULD.** A rule with no check is a suggestion and will be treated as one.
+8. **If a step matters, ship it as an artifact the builder cannot proceed without.** A spec
+   transmits *what to build* across models with high fidelity; it cannot transmit *how to
+   work*. In a four-builder experiment, everything shipped as a file (config, schema,
+   fixtures) transferred to all four; everything shipped as an instruction — including the
+   human authorization gate — was skipped by at least one. Tests are files. The gate is a
+   file. The hook contract is a file.
 
 ## Deliverables at the end
 
@@ -174,7 +186,8 @@ during P0 intake); the splicer and export scripts then operate on those paths.
 - `PRD-<name>.md` — the spec (the product), at the exemplar's bar.
 - `PRD-<name>.{pdf,docx}` — exported, render-verified.
 - The `/specs` + config artifact set authored alongside (roles, canon, policies, schema,
-  golden set) — see `references/sdd-skeleton.md` Appendix D.
+  golden set, **the executable test suite with its hook contract**, and the
+  **`/authorizations/` gate directory**) — see `references/sdd-skeleton.md` Appendix D.
 - A course-coverage scorecard (Appendix B) if the product is agentic.
 - A short design brief capturing anything learned that is worth carrying forward (the
   durable-over-ephemeral rule).

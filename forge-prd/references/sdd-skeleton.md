@@ -181,6 +181,18 @@ disciplines.
 The roadmap expressed as a sequence of **gated 10-field prompt-contracts**, blockers first,
 each with a concrete VERIFY (evidence, not assertion) and a tests-first ACCEPTANCE suite.
 
+Two things this section must carry, learned the hard way:
+
+- **Every AUTHORIZATION field is an imperative, not a role.** *STOP. Present the VERIFY
+  evidence and wait. Do not open the next contract on your own authority; it opens when the
+  Authorizer writes `authorizations/<unit>.approved`.* A field that reads only "Operator" is
+  parsed by builders as metadata, and they run straight through.
+- **The suite is shipped, and it needs a hook contract.** Add a short section (the worked
+  pattern is a "Test hooks" subsection under Evaluation) listing the minimal stable selectors /
+  interfaces / debug affordances the shipped tests locate things by — the only structural
+  requirement the spec imposes on the implementation. An artifact that renames a hook fails
+  the suite by design.
+
 ## 20. Risks & open questions
 
 Honest. The things you are unsure about, the assumptions, the things to confirm at build
@@ -218,7 +230,13 @@ The artifact set authored alongside the spec:
   policies.yaml    role tokens, gates, thresholds, the master kill-switches
   schema/          the data-model schema (mirrors §17)
   golden/          the golden set for evaluation (§15)
+  tests/           THE EXECUTABLE ACCEPTANCE SUITE — spec-owned, shipped, not part of the
+                   deliverable: harness, every T-xx test, a gated runner, its own package
+                   manifest (the harness may have dependencies even when the product may not)
   deviation_log.md the conscious-deviation log (BUNNY)
+/authorizations/
+  README.md        the human gate as a file: the Authorizer writes <unit>.approved, never the
+                   builder; the suite's runner refuses to run the next unit while it is absent
 config/
   <instance>.yaml  one config object per product instance (the Brand-Kit)
   assets/          per-instance assets

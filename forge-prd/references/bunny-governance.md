@@ -40,7 +40,7 @@ judged against:
 | **ACTION** | the work to perform |
 | **ACCEPTANCE** | the exit criterion — *this is the roadmap gate*, authored as an executable test suite (see §3) |
 | **VERIFY** | how acceptance is proven — **evidence, not assertion** (a passing test, a captured artifact, a real run) |
-| **AUTHORIZATION** | who authorizes the *next* unit to open (a forward release) — a role **distinct** from the Executor who did the work and the Validator who certified the VERIFY evidence |
+| **AUTHORIZATION** | three parts — a role name alone does not satisfy this field: **(a) the imperative the Executor obeys at the boundary — STOP, present VERIFY, wait**; (b) *who* grants release — a role **distinct** from the Executor who did the work and the Validator who certified the VERIFY evidence; (c) *how* release is signalled — **an artifact the Executor cannot produce** (a file the Authorizer writes, a merged approval, a signed record) that the next unit's gate checks for mechanically |
 | **ON-FAIL** | the pre-declared fallback if the unit cannot complete as specified |
 
 Turn the phased roadmap into a sequence of these contracts, blockers first.
@@ -71,10 +71,17 @@ This is the discipline that makes phases deterministic:
 ## 4. Lock-and-proceed / verify-before-next
 
 A phase **locks** when its VERIFY evidence exists and it is authorized; only then does the
-next phase **open**. Gates are **checkpoints, not stopping lines** — the target is full
-scope, and the gates sequence the work rather than truncate it. This prevents both premature
-advancement (building on unverified foundations) and premature stopping (declaring victory at
-the first gate).
+next phase **open**. Gates sequence the work; they do not shorten it — full scope is still
+the target, so a builder must not declare victory at the first gate. **But a gate is a stop.**
+The Executor halts at every boundary, presents VERIFY evidence, and waits for the Authorizer's
+signal; it does not open the next unit on its own authority. Make the signal an **artifact the
+Executor cannot produce** (e.g. `authorizations/<unit>.approved`, written by the Authorizer)
+and have the next unit's test runner refuse to start while it is absent — prose cannot compel
+a pause; a missing file can.
+
+*History:* this section used to read "gates are checkpoints, not stopping lines." In a
+four-builder experiment that sentence was copied verbatim into a PRD, and three of four
+builders read it as permission to run every gate without pausing. It was.
 
 ## 5. Conscious-deviation logging
 
@@ -128,6 +135,15 @@ into a non-agentic spec.
 3. The **`/specs/contracts/`** directory (the filled 10-field prompt-contracts, one per build
    unit — durable *inputs*, not regenerated output) and the **`/specs/deviation_log.md`** file,
    both stubbed in the artifact set (Appendix D of the skeleton).
+4. The **executable acceptance suite, shipped** (`/specs/tests/` — Appendix D), plus a
+   **hook contract** (the minimal stable selectors/interfaces the suite locates things by). The
+   PRD author writes the tests; the builder makes them green and may not weaken, skip, or
+   replace them. Tests described in prose become a different, weaker bar in every builder that
+   reads them — one builder wrote assertions weaker than the requirement, another wrote four
+   regex checks on the source and called the build verified.
+5. The **authorization artifact** (`/authorizations/` — Appendix D): the file the Authorizer
+   writes to release each unit, which the suite's runner checks before it will run the next
+   unit's tests. This is §4 made mechanical.
 
 The BUNNY source files (`reference-output/bunny-method/`) also include a **writeup skeleton**
 (03) for packaging a submission and a **build sequence** (04) — use them when the PRD targets
